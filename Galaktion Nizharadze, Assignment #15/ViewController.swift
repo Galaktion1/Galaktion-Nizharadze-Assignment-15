@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         
         Movie(title: "Avengers", releaseDate: "23/07/2013", imdb: 5.1, mainActor: "Hulk", seen: true, isFavourite: false, image: UIImage(named: "img_avengers")!),
         
-        Movie(title: "Borbolia Kochi", releaseDate: "11/09/2019", imdb: 1.8, mainActor: "Peter Parker", seen: true, isFavourite: false, image: UIImage(named: "img_spiderman")!),
+        Movie(title: "Borbolia Kochi", releaseDate: "11/09/2019", imdb: 4.8, mainActor: "Peter Parker", seen: true, isFavourite: false, image: UIImage(named: "img_spiderman")!),
         
         Movie(title: "Benjamin Button", releaseDate: "13/01/2006", imdb: 9.8, mainActor: "Me ara", seen: true, isFavourite: true, image: UIImage(named: "img_benjaminButton")!),
         
@@ -42,14 +42,11 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-        tableView.dataSource = self
+        
+        configureTableView()
         self.view.backgroundColor = UIColor(named: "color_backgroundColor")
-        self.tableView.backgroundColor = UIColor(named: "color_backgroundColor")
-        tableView.register(UINib(nibName: "MoviesTableViewCell", bundle: nil), forCellReuseIdentifier: "MoviesTableViewCell")
         view.addSubview(toolBar)
         view.addSubview(picker)
-        // Do any additional setup after loading the view.
     }
     
     
@@ -65,6 +62,12 @@ class ViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    private func configureTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        self.tableView.backgroundColor = UIColor(named: "color_backgroundColor")
+        tableView.register(UINib(nibName: "MoviesTableViewCell", bundle: nil), forCellReuseIdentifier: "MoviesTableViewCell")
+    }
     
     @IBAction func sortOptions(_ sender: UIButton) {
         picker = UIPickerView.init()
@@ -114,17 +117,23 @@ class ViewController: UIViewController {
     
     var pickerRow = 0
     
+    private struct TableViewConstants {
+        static let numberOfSections = 2
+        static let heightForHeaderInSection: CGFloat = 50
+        static let heightForRow: CGFloat = 406
+    }
+    
 
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        2
+        TableViewConstants.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 50))
+        let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: TableViewConstants.heightForHeaderInSection))
         headerView.backgroundColor =  UIColor(named: "color_backgroundColor")
         
         let label = UILabel()
@@ -156,16 +165,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return TableViewConstants.heightForHeaderInSection
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 406
+        return TableViewConstants.heightForRow
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if pickerRow == 0{
+        if pickerRow == 0 {
             let watchedCount = getWatchedFilms().count
             
             if section == 0 {
@@ -194,7 +203,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let favFilms = getFavoriteFilms()
         let unfavFilms = getUnfavoriteFilms()
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MoviesTableViewCell") as! MoviesTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MoviesTableViewCell") as? MoviesTableViewCell else { return UITableViewCell() }
         
         cell.delegate = self
         
@@ -202,9 +211,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             
             if pickerRow == 0 {
                 cell.setUpUI(model: watchedFilms[indexPath.row])
+                cell.moveToWatchButtonOutlet.titleLabel?.text = "Doesn't Watch"
+                cell.moveToWatchButtonOutlet.isHidden = false
             }
             else {
                 cell.setUpUI(model: favFilms[indexPath.row])
+                cell.moveToWatchButtonOutlet.isHidden = true
             }
             return cell
         }
@@ -213,6 +225,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             
             if pickerRow == 0 {
                 cell.setUpUI(model: unwatchedFilms[indexPath.row])
+                cell.moveToWatchButtonOutlet.titleLabel?.text = "Watched"
             }
             else {
                 cell.setUpUI(model: unfavFilms[indexPath.row])
@@ -233,20 +246,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         
         if indexPath.section == 0 {
-            if pickerRow == 0{
-                vc.configureElements(model: getWatchedFilms()[indexPath.row])
-            }
-            else {
-                vc.configureElements(model:getFavoriteFilms()[indexPath.row])
-            }
+            pickerRow == 0 ?
+            vc.configureElements(model: getWatchedFilms()[indexPath.row]):
+            vc.configureElements(model:getFavoriteFilms()[indexPath.row])
+            
         }
         else {
-            if pickerRow == 0{
-                vc.configureElements(model: getUnWatchedFilms()[indexPath.row])
-            }
-            else {
-                vc.configureElements(model: getUnfavoriteFilms()[indexPath.row])
-            }
+            pickerRow == 0 ?
+            vc.configureElements(model: getUnWatchedFilms()[indexPath.row]) :
+            vc.configureElements(model: getUnfavoriteFilms()[indexPath.row])
+            
         }
         
         navigationController?.pushViewController(vc, animated: true)
@@ -266,9 +275,6 @@ extension ViewController: MovieDetailsViewControllerDelegate {
             }
         }
     }
-    
-    
-    
 }
 
 
@@ -300,6 +306,6 @@ extension ViewController: MoviesTableViewCellDelegate {
                 self.tableView.reloadData()
             }
         }
-
     }
 }
+

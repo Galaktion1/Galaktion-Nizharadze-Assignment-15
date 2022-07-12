@@ -65,17 +65,7 @@ class MovieDetailsViewController: UIViewController {
         isFavourite = model.isFavourite
         
         if model.isFavourite {
-            favButtonOutlet.setImage(UIImage(systemName: "heart.fill"), for: .normal
-            )
+            favButtonOutlet.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         }
-        
-        
-        
-        
-        
     }
-    
-
-   
-
 }

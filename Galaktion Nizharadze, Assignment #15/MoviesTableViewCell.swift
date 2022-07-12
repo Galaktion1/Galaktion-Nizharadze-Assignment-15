@@ -13,14 +13,13 @@ protocol MoviesTableViewCellDelegate {
 
 class MoviesTableViewCell: UITableViewCell {
     
-    
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mainCharacter: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var imdbNumberLabel: UILabel!
     @IBOutlet weak var starsLabel: UILabel!
-    @IBOutlet weak var moveToWatchButtonOutlet: UIButton!
+    @IBOutlet var moveToWatchButtonOutlet: UIButton!
     
     private var isWatched: Bool!
     private var movieTitle: String!
@@ -52,9 +51,7 @@ class MoviesTableViewCell: UITableViewCell {
         }
     }
     
-    func removeWatchButtonFromSuperview() {
-        moveToWatchButtonOutlet.removeFromSuperview()
-    }
+    
     
     func setUpUI(model: Movie) {
         movieImageView.image = model.image
@@ -65,13 +62,9 @@ class MoviesTableViewCell: UITableViewCell {
         starsLabel.text = model.imdb.configureStars()
         isWatched = model.seen
         movieTitle = model.title
-        
-        
     }
-    
-    
-    
 }
+
 
 
 extension Double {
