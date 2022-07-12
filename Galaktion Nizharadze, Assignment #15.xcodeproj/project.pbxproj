@@ -13,6 +13,11 @@
 		9A6A6402287CB97C004A3161 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A6A6400287CB97C004A3161 /* Main.storyboard */; };
 		9A6A6404287CB97E004A3161 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A6A6403287CB97E004A3161 /* Assets.xcassets */; };
 		9A6A6407287CB97E004A3161 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A6A6405287CB97E004A3161 /* LaunchScreen.storyboard */; };
+		9A6A6410287CBA34004A3161 /* MovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A640F287CBA34004A3161 /* MovieModel.swift */; };
+		9ADEAE9B287CC3EA0003F9A1 /* MoviesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADEAE99287CC3EA0003F9A1 /* MoviesTableViewCell.swift */; };
+		9ADEAE9C287CC3EA0003F9A1 /* MoviesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADEAE9A287CC3EA0003F9A1 /* MoviesTableViewCell.xib */; };
+		9ADEAE9E287CDC740003F9A1 /* MovieDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9ADEAE9D287CDC740003F9A1 /* MovieDetails.storyboard */; };
+		9ADEAEA0287CDC8E0003F9A1 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADEAE9F287CDC8E0003F9A1 /* MovieDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,11 @@
 		9A6A6403287CB97E004A3161 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A6A6406287CB97E004A3161 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A6A6408287CB97E004A3161 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A6A640F287CBA34004A3161 /* MovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieModel.swift; sourceTree = "<group>"; };
+		9ADEAE99287CC3EA0003F9A1 /* MoviesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesTableViewCell.swift; sourceTree = "<group>"; };
+		9ADEAE9A287CC3EA0003F9A1 /* MoviesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoviesTableViewCell.xib; sourceTree = "<group>"; };
+		9ADEAE9D287CDC740003F9A1 /* MovieDetails.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MovieDetails.storyboard; sourceTree = "<group>"; };
+		9ADEAE9F287CDC8E0003F9A1 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +66,28 @@
 		9A6A63F9287CB97C004A3161 /* Galaktion Nizharadze, Assignment #15 */ = {
 			isa = PBXGroup;
 			children = (
-				9A6A63FA287CB97C004A3161 /* AppDelegate.swift */,
-				9A6A63FC287CB97C004A3161 /* SceneDelegate.swift */,
+				9A6A640E287CB992004A3161 /* SupportingFiles */,
+				9A6A640F287CBA34004A3161 /* MovieModel.swift */,
 				9A6A63FE287CB97C004A3161 /* ViewController.swift */,
 				9A6A6400287CB97C004A3161 /* Main.storyboard */,
+				9ADEAE99287CC3EA0003F9A1 /* MoviesTableViewCell.swift */,
+				9ADEAE9A287CC3EA0003F9A1 /* MoviesTableViewCell.xib */,
+				9ADEAE9F287CDC8E0003F9A1 /* MovieDetailsViewController.swift */,
+				9ADEAE9D287CDC740003F9A1 /* MovieDetails.storyboard */,
+			);
+			path = "Galaktion Nizharadze, Assignment #15";
+			sourceTree = "<group>";
+		};
+		9A6A640E287CB992004A3161 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				9A6A63FA287CB97C004A3161 /* AppDelegate.swift */,
+				9A6A63FC287CB97C004A3161 /* SceneDelegate.swift */,
 				9A6A6403287CB97E004A3161 /* Assets.xcassets */,
 				9A6A6405287CB97E004A3161 /* LaunchScreen.storyboard */,
 				9A6A6408287CB97E004A3161 /* Info.plist */,
 			);
-			path = "Galaktion Nizharadze, Assignment #15";
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,7 +149,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A6A6407287CB97E004A3161 /* LaunchScreen.storyboard in Resources */,
+				9ADEAE9E287CDC740003F9A1 /* MovieDetails.storyboard in Resources */,
 				9A6A6404287CB97E004A3161 /* Assets.xcassets in Resources */,
+				9ADEAE9C287CC3EA0003F9A1 /* MoviesTableViewCell.xib in Resources */,
 				9A6A6402287CB97C004A3161 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,7 +163,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A6A6410287CBA34004A3161 /* MovieModel.swift in Sources */,
 				9A6A63FF287CB97C004A3161 /* ViewController.swift in Sources */,
+				9ADEAEA0287CDC8E0003F9A1 /* MovieDetailsViewController.swift in Sources */,
+				9ADEAE9B287CC3EA0003F9A1 /* MoviesTableViewCell.swift in Sources */,
 				9A6A63FB287CB97C004A3161 /* AppDelegate.swift in Sources */,
 				9A6A63FD287CB97C004A3161 /* SceneDelegate.swift in Sources */,
 			);
@@ -289,7 +317,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9BZ4794R5K;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Galaktion Nizharadze, Assignment #15/Info.plist";
+				INFOPLIST_FILE = "Galaktion Nizharadze, Assignment #15/SupportingFiles/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -317,7 +345,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9BZ4794R5K;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Galaktion Nizharadze, Assignment #15/Info.plist";
+				INFOPLIST_FILE = "Galaktion Nizharadze, Assignment #15/SupportingFiles/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
