@@ -9,44 +9,49 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    var picker = UIPickerView()
+    var toolBar = UIToolbar()
+    private let pickerViewComponents = ["WATCH/UNWATCH", "IS FAVOURITE/ISN'T FAVOURITE"]
+    
+    var genres: [String] = ["All", "Comedy", "Action", "Drama"]
+    var sortByGenre = [Movie]()
+    
     var movies: [Movie] = [
-        Movie(title: "Fight Club", releaseDate: "11/11/1999", imdb: 8.8, mainActor: "Brad Pitt", seen: true, isFavourite: true, image: UIImage(named: "img_fightclub")!),
+        Movie(title: "Fight Club", releaseDate: "11/11/1999", imdb: 8.8, mainActor: "Brad Pitt", seen: true, isFavourite: true, image: UIImage(named: "img_fightclub")!, genre: .action),
               
-        Movie(title: "Udiplomo sasidzo", releaseDate: "03/04/1970", imdb: 10.0, mainActor: "Bichiko", seen: true, isFavourite: false, image: UIImage(named: "img_udiplomosasidzo")!),
+        Movie(title: "Udiplomo sasidzo", releaseDate: "03/04/1970", imdb: 10.0, mainActor: "Bichiko", seen: true, isFavourite: false, image: UIImage(named: "img_udiplomosasidzo")!, genre: .comedy),
         
-        Movie(title: "X-men", releaseDate: "07/08/2011", imdb: 7.5, mainActor: "Logan", seen: false, isFavourite: true, image: UIImage(named: "img_x-men")!),
+        Movie(title: "X-men", releaseDate: "07/08/2011", imdb: 7.5, mainActor: "Logan", seen: false, isFavourite: true, image: UIImage(named: "img_x-men")!, genre: .action),
         
-        Movie(title: "Interstelar", releaseDate: "05/12/2014", imdb: 8.6, mainActor: "Matthew McConaughey", seen: false, isFavourite: false, image: UIImage(named: "img_interstellar")!),
+        Movie(title: "Interstelar", releaseDate: "05/12/2014", imdb: 8.6, mainActor: "Matthew McConaughey", seen: false, isFavourite: false, image: UIImage(named: "img_interstellar")!, genre: .action),
         
-        Movie(title: "Avatar", releaseDate: "11/12/2009", imdb: 9.5, mainActor: "Aang", seen: true, isFavourite: true, image: UIImage(named: "img_avatar")!),
+        Movie(title: "Avatar", releaseDate: "11/12/2009", imdb: 9.5, mainActor: "Aang", seen: true, isFavourite: true, image: UIImage(named: "img_avatar")!, genre: .drama),
         
-        Movie(title: "Deadpool", releaseDate: "04/04/2017", imdb: 8.1, mainActor: "Ryan Reynolds", seen: false, isFavourite: false, image: UIImage(named: "img_deadpool")!),
+        Movie(title: "Deadpool", releaseDate: "04/04/2017", imdb: 8.1, mainActor: "Ryan Reynolds", seen: false, isFavourite: false, image: UIImage(named: "img_deadpool")!, genre: .comedy),
         
-        Movie(title: "Avengers", releaseDate: "23/07/2013", imdb: 5.1, mainActor: "Hulk", seen: true, isFavourite: false, image: UIImage(named: "img_avengers")!),
+        Movie(title: "Avengers", releaseDate: "23/07/2013", imdb: 5.1, mainActor: "Hulk", seen: true, isFavourite: false, image: UIImage(named: "img_avengers")!, genre: .drama),
         
-        Movie(title: "Borbolia Kochi", releaseDate: "11/09/2019", imdb: 4.8, mainActor: "Peter Parker", seen: true, isFavourite: false, image: UIImage(named: "img_spiderman")!),
+        Movie(title: "Borbolia Kochi", releaseDate: "11/09/2019", imdb: 4.8, mainActor: "Peter Parker", seen: true, isFavourite: false, image: UIImage(named: "img_spiderman")!, genre: .action),
         
-        Movie(title: "Benjamin Button", releaseDate: "13/01/2006", imdb: 9.8, mainActor: "Me ara", seen: true, isFavourite: true, image: UIImage(named: "img_benjaminButton")!),
+        Movie(title: "Benjamin Button", releaseDate: "13/01/2006", imdb: 9.8, mainActor: "Me ara", seen: true, isFavourite: true, image: UIImage(named: "img_benjaminButton")!, genre: .drama),
         
-        Movie(title: "Troy", releaseDate: "15/11/2003", imdb: 8.7, mainActor: "Brad Pitt", seen: true, isFavourite: true, image: UIImage(named: "img_troy")!),
+        Movie(title: "Troy", releaseDate: "15/11/2003", imdb: 8.7, mainActor: "Brad Pitt", seen: true, isFavourite: true, image: UIImage(named: "img_troy")!, genre: .action),
     ]
     
-    private var toolBar = UIToolbar()
-    private var picker  = UIPickerView()
+
     
-    private let pickerViewComponents = ["WATCH/UNWATCH", "IS FAVOURITE/ISN'T FAVOURITE"]
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        sortByGenre = movies
         
-        configureTableView()
+        configureTableAndCollectionViews()
         self.view.backgroundColor = UIColor(named: "color_backgroundColor")
-        view.addSubview(toolBar)
-        view.addSubview(picker)
     }
     
     
@@ -62,15 +67,39 @@ class ViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    private func configureTableView() {
+    private func makeSelectedCellHighlighted(text: UILabel) {
+        text.textColor = .yellow
+    }
+    
+    
+    private func configureTableAndCollectionViews() {
+        
         tableView.delegate = self
         tableView.dataSource = self
         self.tableView.backgroundColor = UIColor(named: "color_backgroundColor")
         tableView.register(UINib(nibName: "MoviesTableViewCell", bundle: nil), forCellReuseIdentifier: "MoviesTableViewCell")
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
+    
+    
     @IBAction func sortOptions(_ sender: UIButton) {
-        picker = UIPickerView.init()
+        
+        picker = UIPickerView(frame: CGRect(x: 0, y: 200, width: view.frame.width, height: 300))
+        picker.backgroundColor = .white
+
+        picker.delegate = self
+        picker.dataSource = self
+
+       
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
+        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        toolBar.sizeToFit()
+        
+        
         picker.delegate = self
         picker.dataSource = self
         picker.backgroundColor = UIColor.white
@@ -93,29 +122,30 @@ class ViewController: UIViewController {
     
     private func getWatchedFilms() -> [Movie] {
         
-        let watched = movies.filter { $0.seen }
+        let watched = sortByGenre.filter { $0.seen }
         
         return watched
     }
     
     private func getUnWatchedFilms() -> [Movie] {
-        let unwatched = movies.filter { !$0.seen }
+        let unwatched = sortByGenre.filter { !$0.seen }
         
         return unwatched
     }
     
     private func getFavoriteFilms() -> [Movie] {
-        let fav = movies.filter { $0.isFavourite }
+        let fav = sortByGenre.filter { $0.isFavourite }
         return fav
     }
     
     private func getUnfavoriteFilms() -> [Movie] {
-        let unfav = movies.filter { !$0.isFavourite }
+        let unfav = sortByGenre.filter { !$0.isFavourite }
         return unfav
     }
     
     
     var pickerRow = 0
+    
     
     private struct TableViewConstants {
         static let numberOfSections = 2
@@ -181,7 +211,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 return watchedCount
             }
             else {
-                return movies.count - watchedCount
+                return sortByGenre.count - watchedCount
             }
         }
         else {
@@ -190,7 +220,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 return favCount
             }
             else {
-                return movies.count - favCount
+                return sortByGenre.count - favCount
             }
         }
     }
@@ -210,6 +240,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             
             if pickerRow == 0 {
+                
                 cell.setUpUI(model: watchedFilms[indexPath.row])
                 cell.moveToWatchButtonOutlet.titleLabel?.text = "Doesn't Watch"
                 cell.moveToWatchButtonOutlet.isHidden = false
@@ -235,6 +266,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    private func confUIForDetails(vc: MovieDetailsViewController, model: Movie) {
+        vc.configureElements(model: model)
+     
+        
+//        let removedSelectedMovie = movies.filter { $0 != model }
+        vc.moviesWithSameGenres = movies.filter { $0.genre == model.genre }
+        
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let sb = UIStoryboard(name: "MovieDetails", bundle: Bundle.main)
@@ -246,17 +286,23 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         
         if indexPath.section == 0 {
-            pickerRow == 0 ?
-            vc.configureElements(model: getWatchedFilms()[indexPath.row]):
-            vc.configureElements(model:getFavoriteFilms()[indexPath.row])
+            if pickerRow == 0 {
+                confUIForDetails(vc: vc, model: getWatchedFilms()[indexPath.row])
+
+            }
+            else {
+                confUIForDetails(vc: vc, model: getFavoriteFilms()[indexPath.row])
+            }
             
         }
         else {
             pickerRow == 0 ?
-            vc.configureElements(model: getUnWatchedFilms()[indexPath.row]) :
-            vc.configureElements(model: getUnfavoriteFilms()[indexPath.row])
-            
+            confUIForDetails(vc: vc, model: getUnWatchedFilms()[indexPath.row])
+            :
+            confUIForDetails(vc: vc, model: getUnfavoriteFilms()[indexPath.row])
         }
+        
+        
         
         navigationController?.pushViewController(vc, animated: true)
         
@@ -268,9 +314,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: MovieDetailsViewControllerDelegate {
     func changeIsFavourite(_ bool: Bool, title: String) {
         
-        for index in 0 ..< movies.count {
-            if movies[index].title == title {
-                movies[index].isFavourite = bool
+        for index in 0 ..< sortByGenre.count {
+            if sortByGenre[index].title == title {
+                sortByGenre[index].isFavourite = bool
                 self.tableView.reloadData()
             }
         }
@@ -300,12 +346,58 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 
 extension ViewController: MoviesTableViewCellDelegate {
     func changePosition(_ isInWatchedSection: Bool, title: String) {
-        for index in 0 ..< movies.count {
-            if movies[index].title == title {
-                movies[index].seen = isInWatchedSection
+        for index in 0 ..< sortByGenre.count {
+            if sortByGenre[index].title == title {
+                sortByGenre[index].seen = isInWatchedSection
                 self.tableView.reloadData()
             }
         }
     }
 }
 
+
+extension ViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        genres.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: view.bounds.width / 5, height: 30)
+    }
+    
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GenreCell", for: indexPath) as? GenreCell
+        
+        cell?.genreLabel.text = genres[indexPath.row]
+        
+        return cell ?? UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        switch indexPath.row {
+        case 0: // all
+            
+            sortByGenre = movies
+            
+            self.tableView.reloadData()
+        case 1: // comedy
+            sortByGenre = movies.filter { $0.genre == .comedy }
+            self.tableView.reloadData()
+        case 2: // action
+            sortByGenre = movies.filter { $0.genre == .action }
+            self.tableView.reloadData()
+        case 3: // drama
+            sortByGenre = movies.filter { $0.genre == .drama }
+            self.tableView.reloadData()
+        default:
+            sortByGenre = movies
+            self.tableView.reloadData()
+        }
+    }
+    
+}

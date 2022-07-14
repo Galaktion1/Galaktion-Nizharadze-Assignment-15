@@ -13,17 +13,18 @@ protocol MoviesTableViewCellDelegate {
 
 class MoviesTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var movieImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var mainCharacter: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var imdbNumberLabel: UILabel!
-    @IBOutlet weak var starsLabel: UILabel!
+    @IBOutlet var movieImageView: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var mainCharacter: UILabel!
+    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var imdbNumberLabel: UILabel!
+    @IBOutlet var starsLabel: UILabel!
     @IBOutlet var moveToWatchButtonOutlet: UIButton!
     
     private var isWatched: Bool!
     private var movieTitle: String!
     var delegate: MoviesTableViewCellDelegate?
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
